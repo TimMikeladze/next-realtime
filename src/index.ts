@@ -10,7 +10,7 @@ export type SubscribeFn = (
 
 export type OnMessageFn = (callback: (message: any) => void) => Promise<void>;
 
-export const makeNextLive = (options: {
+export const configNextLive = (options: {
   onMessage: OnMessageFn;
   publish: PublishFn;
   subscribe: SubscribeFn;
@@ -23,7 +23,7 @@ export const makeNextLive = (options: {
     return options.publish('next-live', JSON.stringify({ tags: _tags }));
   };
 
-  const liveHandler = () => {
+  const NextLiveHandler = () => {
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
@@ -48,7 +48,22 @@ export const makeNextLive = (options: {
     });
   };
   return {
-    liveHandler,
+    NextLiveHandler,
     revalidateLiveTag,
   };
 };
+
+export const configNextLiveRedis = (redis: any) =>
+  configNextLive({
+    publish: async (channel: any, message: any) => {
+      await redis.publish(channel, message);
+    },
+    subscribe: async (channel: any, callback: any) => {
+      await redis.subscribe(channel, callback);
+    },
+    onMessage: async (enqueue: any) => {
+      await redis.on('message', (channel: string, message: string) => {
+        enqueue(message);
+      });
+    },
+  });

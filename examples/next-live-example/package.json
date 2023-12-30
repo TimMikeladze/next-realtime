@@ -1,0 +1,43 @@
+{
+  "name": "nextjs-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "migrate:generate": "drizzle-kit generate:pg --out src/drizzle/migrations --schema src/drizzle/schema.ts",
+    "migrate": "yarn ts src/drizzle/migrate",
+    "ts": "node node_modules/.bin/ts-node -r tsconfig-paths/register -O '{\"module\": \"commonjs\", \"moduleResolution\": \"classic\", \"resolveJsonModule\": false }' --transpile-only --project ./tsconfig.json"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.6.1",
+    "@upstash/redis": "^1.27.1",
+    "drizzle-orm": "^0.29.2",
+    "ioredis": "^5.3.2",
+    "nanoid": "^5.0.4",
+    "next": "14.0.4",
+    "pg-listen": "^1.7.0",
+    "postgres": "^3.4.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-fetch-streams": "^1.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "dotenv": "^16.3.1",
+    "drizzle-kit": "^0.20.9",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5",
+    "yalc": "^1.0.0-pre.53"
+  }
+}

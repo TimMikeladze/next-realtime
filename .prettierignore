@@ -9,3 +9,6 @@ yarn.lock
 .gitignore
 .editorconfig
 .env.template
+*.svg
+*.ico
+*.sql

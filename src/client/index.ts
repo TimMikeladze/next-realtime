@@ -5,7 +5,6 @@ import { useStream } from 'react-fetch-streams';
 
 export interface NextLiveProps {
   revalidateTag: (tag: string) => Promise<void>;
-  type: string;
 }
 
 export const NextLive = (props: NextLiveProps) => {
@@ -16,16 +15,16 @@ export const NextLive = (props: NextLiveProps) => {
       const data = (await res.json()) || {};
       if (data.tags) {
         data.tags.forEach((tag: string) => {
-          console.log('revalidating tag', tag);
+          // console.log('revalidating tag', tag);
           startTransition(() => {
             props.revalidateTag(tag);
           });
         });
       } else {
-        console.log('no tags', data);
+        // console.log('no tags', data);
       }
     } catch (e) {
-      console.log('error', e);
+      // console.log('error', e);
     }
     // data.forEach((tag: string) => {
     //   startTransition(() => {
@@ -38,7 +37,7 @@ export const NextLive = (props: NextLiveProps) => {
     // console.log('error', error);
   }, []);
 
-  const url = `/next-live/${props.type}`;
+  const url = `/next-live`;
 
   const [id, setId] = useState(nanoid());
 
