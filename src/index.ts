@@ -8,26 +8,29 @@ export type SubscribeFn = (
   callback: () => void
 ) => Promise<void>;
 
-export type OnMessageFn = (callback: (message: any) => void) => Promise<void>;
+export type OnMessageFn = (
+  channel: string,
+  enqueue: (message: any) => void
+) => Promise<void>;
 
-export const configNextLive = (options: {
+export const configNextRealtime = (options: {
   onMessage: OnMessageFn;
   publish: PublishFn;
   subscribe: SubscribeFn;
 }) => {
-  const revalidateLiveTag = (tags: string[] | string = []) => {
+  const revalidateRealtimeTag = (tags: string[] | string = []) => {
     const _tags = Array.isArray(tags) ? tags : [tags];
     _tags.forEach((tag) => {
       revalidateTag(tag);
     });
-    return options.publish('next-live', JSON.stringify({ tags: _tags }));
+    return options.publish('next-realtime', JSON.stringify({ tags: _tags }));
   };
 
-  const NextLiveStreamHandler = () => {
+  const NextRealtimeStreamHandler = () => {
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        await options.subscribe('next-live', () => {});
+        await options.subscribe('next-realtime', () => {});
         const enqueue = (message: any) => {
           try {
             controller.enqueue(encoder.encode(message));
@@ -35,38 +38,44 @@ export const configNextLive = (options: {
             //
           }
         };
-        await options.onMessage(enqueue);
+        await options.onMessage('next-realtime', enqueue);
       },
     });
-    return new Response(stream, {
-      headers: {
-        'Content-Type': 'text/event-stream; charset=utf-8',
-        Connection: 'keep-alive',
-        'Cache-Control': 'no-cache, no-transform',
-        'Content-Encoding': 'none',
-      },
-    });
+    return new Response(stream);
   };
 
-  const NextLivePollingHandler = () => {};
+  const NextRealtimePollingHandler = () => {};
 
   return {
-    NextLiveStreamHandler,
-    NextLivePollingHandler,
-    revalidateLiveTag,
+    NextRealtimeStreamHandler,
+    NextRealtimePollingHandler,
+    revalidateRealtimeTag,
   };
 };
 
-export const configNextLiveRedis = (redis: any) =>
-  configNextLive({
+export const configNextRealtimeRedis = (redis: any) =>
+  configNextRealtime({
     publish: async (channel: any, message: any) => {
       await redis.publish(channel, message);
     },
     subscribe: async (channel: any, callback: any) => {
       await redis.subscribe(channel, callback);
     },
-    onMessage: async (enqueue: any) => {
-      await redis.on('message', (channel: string, message: string) => {
+    onMessage: async (channel: any, enqueue: any) => {
+      await redis.on('message', (_channel: string, message: string) => {
+        enqueue(message);
+      });
+    },
+  });
+
+export const configNextRealtimePostgres = (client: any) =>
+  configNextRealtime({
+    publish: async (channel: any, message: any) => {
+      await client.notify(channel, message);
+    },
+    subscribe: async () => {},
+    onMessage: async (channel, enqueue: any) => {
+      await client.listen(channel, (message: string) => {
         enqueue(message);
       });
     },

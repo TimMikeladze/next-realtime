@@ -36,7 +36,7 @@ jobs:
         run: yarn build
 
       - name: Setup example
-        run: cd example/next-live-example && yarn install --frozen-lockfile && yarn link next-live && yarn build
+        run: cd example/next-realtime-example && yarn install --frozen-lockfile && yarn link next-realtime && yarn build
 
       - name: Check types
         run: yarn type-check

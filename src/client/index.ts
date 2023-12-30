@@ -3,13 +3,13 @@ import { useCallback, useState, useTransition, useEffect, useRef } from 'react';
 // @ts-ignore
 import { useStream } from 'react-fetch-streams';
 
-export interface NextLiveProps {
+export interface NextRealtimeProps {
   baseUrl?: string;
   path?: string;
   revalidateTag: (tag: string) => Promise<void>;
 }
 
-export const NextLiveStream = (props: NextLiveProps) => {
+export const NextRealtimeStream = (props: NextRealtimeProps) => {
   const [, startTransition] = useTransition();
 
   const onNext = useCallback(async (res: any) => {
@@ -33,7 +33,7 @@ export const NextLiveStream = (props: NextLiveProps) => {
     // console.log('error', error);
   }, []);
 
-  const url = `${props.baseUrl || ''}/${props.path || `next-live`}`;
+  const url = `${props.baseUrl || ''}/${props.path || `realtime`}`;
 
   const [id, setId] = useState(nanoid());
 
@@ -51,11 +51,11 @@ export const NextLiveStream = (props: NextLiveProps) => {
   return null;
 };
 
-export interface NextLivePollingProps extends NextLiveProps {
+export interface NextRealtimePollingProps extends NextRealtimeProps {
   pollInterval?: number;
 }
 
-export const NextLivePolling = (props: NextLivePollingProps) => {
+export const NextRealtimePolling = (props: NextRealtimePollingProps) => {
   const isPageVisible = usePageVisibility();
   const timerIdRef = useRef(null);
   const [isPollingEnabled, setIsPollingEnabled] = useState(true);
@@ -63,7 +63,7 @@ export const NextLivePolling = (props: NextLivePollingProps) => {
   useEffect(() => {
     const pollingCallback = async () => {
       const res = await fetch(
-        `${props.baseUrl || ''}/${props.path || `next-live`}`
+        `${props.baseUrl || ''}/${props.path || `realtime`}`
       );
 
       if (res.status === 200) {

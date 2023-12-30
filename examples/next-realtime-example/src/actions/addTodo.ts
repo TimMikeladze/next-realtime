@@ -1,7 +1,7 @@
 'use server';
 
 import { nanoid } from 'nanoid';
-import { revalidateLiveTag } from '../app/next-live/config';
+import { revalidateRealtimeTag } from '../app/realtime/config';
 import { getDb } from '../drizzle/getDb';
 import { todoTable } from '../drizzle/schema';
 
@@ -17,5 +17,5 @@ export const addTodo = async ({ text }: { text: string }) => {
     text: text.trim(),
   });
 
-  await revalidateLiveTag('todos');
+  await revalidateRealtimeTag('todos');
 };

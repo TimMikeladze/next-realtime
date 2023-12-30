@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateLiveTag } from '../app/next-live/config';
+import { revalidateRealtimeTag } from '../app/realtime/config';
 import { getDb } from '../drizzle/getDb';
 import { todoTable } from '../drizzle/schema';
 
@@ -9,5 +9,5 @@ export const clearTodos = async () => {
 
   await db.delete(todoTable).execute();
 
-  await revalidateLiveTag('todos');
+  await revalidateRealtimeTag('todos');
 };
