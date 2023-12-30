@@ -33,7 +33,7 @@ jobs:
         run: yarn build
 
       - name: Setup example
-        run: cd example/next-realtime-example && yarn install --frozen-lockfile && yarn link next-realtime && yarn build
+        run: cd examples/next-realtime-example && yarn install --frozen-lockfile && yarn link next-realtime && yarn build
 
       - name: Check linting
         run: yarn lint
