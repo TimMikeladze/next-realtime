@@ -1,13 +1,15 @@
 import { nanoid } from 'nanoid';
-import { useCallback, useState, useTransition } from 'react';
+import { useCallback, useState, useTransition, useEffect, useRef } from 'react';
 // @ts-ignore
 import { useStream } from 'react-fetch-streams';
 
 export interface NextLiveProps {
+  baseUrl?: string;
+  path?: string;
   revalidateTag: (tag: string) => Promise<void>;
 }
 
-export const NextLive = (props: NextLiveProps) => {
+export const NextLiveStream = (props: NextLiveProps) => {
   const [, startTransition] = useTransition();
 
   const onNext = useCallback(async (res: any) => {
@@ -15,7 +17,6 @@ export const NextLive = (props: NextLiveProps) => {
       const data = (await res.json()) || {};
       if (data.tags) {
         data.tags.forEach((tag: string) => {
-          // console.log('revalidating tag', tag);
           startTransition(() => {
             props.revalidateTag(tag);
           });
@@ -26,18 +27,13 @@ export const NextLive = (props: NextLiveProps) => {
     } catch (e) {
       // console.log('error', e);
     }
-    // data.forEach((tag: string) => {
-    //   startTransition(() => {
-    //     props.revalidateTag(tag);
-    //   });
-    // });
   }, []);
 
   const onError = useCallback(() => {
     // console.log('error', error);
   }, []);
 
-  const url = `/next-live`;
+  const url = `${props.baseUrl || ''}/${props.path || `next-live`}`;
 
   const [id, setId] = useState(nanoid());
 
@@ -53,4 +49,76 @@ export const NextLive = (props: NextLiveProps) => {
   });
 
   return null;
+};
+
+export interface NextLivePollingProps extends NextLiveProps {
+  pollInterval?: number;
+}
+
+export const NextLivePolling = (props: NextLivePollingProps) => {
+  const isPageVisible = usePageVisibility();
+  const timerIdRef = useRef(null);
+  const [isPollingEnabled, setIsPollingEnabled] = useState(true);
+
+  useEffect(() => {
+    const pollingCallback = async () => {
+      const res = await fetch(
+        `${props.baseUrl || ''}/${props.path || `next-live`}`
+      );
+
+      if (res.status === 200) {
+        const data = await res.json();
+        if (data.tags) {
+          data.tags.forEach((tag: string) => {
+            props.revalidateTag(tag);
+          });
+        }
+      }
+
+      // Your polling logic here
+      console.log('Polling...');
+
+      setIsPollingEnabled(false);
+    };
+
+    const startPolling = () => {
+      pollingCallback(); // To immediately start fetching data
+      (timerIdRef as any).current = setInterval(
+        pollingCallback,
+        props.pollInterval || 1000
+      );
+    };
+
+    const stopPolling = () => {
+      clearInterval((timerIdRef as any).current);
+    };
+
+    if (isPageVisible && isPollingEnabled) {
+      startPolling();
+    } else {
+      stopPolling();
+    }
+
+    return () => {
+      stopPolling();
+    };
+  }, [isPageVisible, isPollingEnabled]);
+};
+
+export const usePageVisibility = () => {
+  const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsPageVisible(!document.hidden);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  return isPageVisible;
 };

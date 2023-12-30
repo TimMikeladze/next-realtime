@@ -1,5 +1,5 @@
 import { configNextLiveRedis } from 'next-live';
 import { redis } from './redis';
 
-export const { NextLiveHandler, revalidateLiveTag } =
+export const { NextLiveStreamHandler, revalidateLiveTag } =
   configNextLiveRedis(redis);

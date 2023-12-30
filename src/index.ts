@@ -23,7 +23,7 @@ export const configNextLive = (options: {
     return options.publish('next-live', JSON.stringify({ tags: _tags }));
   };
 
-  const NextLiveHandler = () => {
+  const NextLiveStreamHandler = () => {
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
@@ -47,8 +47,12 @@ export const configNextLive = (options: {
       },
     });
   };
+
+  const NextLivePollingHandler = () => {};
+
   return {
-    NextLiveHandler,
+    NextLiveStreamHandler,
+    NextLivePollingHandler,
     revalidateLiveTag,
   };
 };

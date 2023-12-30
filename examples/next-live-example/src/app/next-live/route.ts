@@ -1,5 +1,5 @@
-import { NextLiveHandler } from './config';
+import { NextLiveStreamHandler } from './config';
 
 export const dynamic = 'force-dynamic';
 
-export const GET = NextLiveHandler;
+export const GET = NextLiveStreamHandler;
