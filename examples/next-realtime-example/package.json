@@ -1,9 +1,9 @@
 {
-  "name": "nextjs-example",
+  "name": "next-realtime-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn yalc link next-realtime && yarn link next-realtime && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

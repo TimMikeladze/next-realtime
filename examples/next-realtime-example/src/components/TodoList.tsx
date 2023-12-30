@@ -1,6 +1,7 @@
 import { getTodos } from '../actions/getTodos';
 import { AddTodoButton } from './AddTodoButton';
 import { ClearTodosButton } from './ClearTodosButton';
+import { RealtimeButton } from './RealtimeButton';
 import TodoCard from './TodoCard';
 
 const TodoList = async () => {
@@ -12,6 +13,7 @@ const TodoList = async () => {
       <div className="flex items-center space-x-4 mb-4 flex-wrap">
         <AddTodoButton />
         <ClearTodosButton />
+        <RealtimeButton />
       </div>
       <div className="space-y-4">
         {todos.map((todo) => (

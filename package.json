@@ -30,9 +30,9 @@
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
-    "./client": {
-      "require": "./dist/client/index.js",
-      "import": "./dist/client/index.mjs"
+    "./react": {
+      "require": "./dist/react/index.js",
+      "import": "./dist/react/index.mjs"
     }
   },
   "files": [
