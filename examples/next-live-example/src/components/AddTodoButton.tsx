@@ -1,7 +1,7 @@
 'use client';
 
-// AddTodoButton.js
 import React, { useTransition, useState } from 'react';
+import { nanoid } from 'nanoid';
 import { addTodo } from '../actions/addTodo';
 
 export const AddTodoButton = () => {
@@ -15,7 +15,7 @@ export const AddTodoButton = () => {
   const handleAddTodo = () => {
     startTransition(() =>
       addTodo({
-        text: todoText,
+        text: todoText || `Random todo ${nanoid(4)}`,
       })
     );
     setTodoText(''); // Clear the input field after adding todo
