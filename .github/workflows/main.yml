@@ -26,9 +26,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Check linting
-        run: yarn lint
-
       - name: Run tests
         run: yarn test:ci
 
@@ -37,6 +34,9 @@ jobs:
 
       - name: Setup example
         run: cd example/next-realtime-example && yarn install --frozen-lockfile && yarn link next-realtime && yarn build
+
+      - name: Check linting
+        run: yarn lint
 
       - name: Check types
         run: yarn type-check

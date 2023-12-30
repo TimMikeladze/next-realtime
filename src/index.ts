@@ -44,11 +44,8 @@ export const configNextRealtime = (options: {
     return new Response(stream);
   };
 
-  const NextRealtimePollingHandler = () => {};
-
   return {
     NextRealtimeStreamHandler,
-    NextRealtimePollingHandler,
     revalidateRealtimeTag,
   };
 };
