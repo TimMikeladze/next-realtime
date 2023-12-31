@@ -1,5 +1,6 @@
-import { getDbServerless } from './getDbServerless';
+import { getDbServer } from './getDbServer';
 
 export const getDb = async () =>
   // process.env.VERCEL ? getDbServerless() : getDbServer();
-  getDbServerless();
+  // getDbServerless();
+  getDbServer();
