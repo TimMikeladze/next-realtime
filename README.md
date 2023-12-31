@@ -52,11 +52,8 @@ export const client = postgres(
   `${process.env.PG_CONNECTION_STRING}/${process.env.PG_DB}`
 );
 
-export const {
-  NextRealtimeStreamHandler,
-  revalidateRealtimeTag,
-  getRealtimeSessionId,
-} = configNextRealtimeRedis(redis);
+export const { NextRealtimeStreamHandler, revalidateRealtimeTag } =
+  configNextRealtimeRedis(redis);
 ```
 
 Now create a route that will stream data to the client.
@@ -149,15 +146,18 @@ export const getTodos = unstable_cache(
 
 **src/components/TodoList.tsx**
 
-```ts
+```tsx
 import { getTodos } from '../actions/getTodos'; // 👈
 import TodoCard from './TodoCard';
+import { AddTodoButton } from './AddTodoButton';
 
-const TodoList = async () => { // 👈 async react component
+const TodoList = async () => {
+  // 👈 async react component
   const todos = await getTodos();
 
   return (
     <div className="container p-4">
+      <AddTodoButton />
       <div className="space-y-4">
         {todos.map((todo) => (
           <TodoCard key={todo.id} todo={todo} />
@@ -195,6 +195,49 @@ export const addTodo = async ({ text }: { text: string }) => {
   });
 
   await revalidateRealtimeTag('todos'); // 👈
+};
+```
+
+**src/components/AddTodoButton.tsx**
+
+```tsx
+'use client';
+
+import React, { useTransition, useState } from 'react';
+import { nanoid } from 'nanoid';
+import { addTodo } from '../actions/addTodo';
+
+export const AddTodoButton = () => {
+  const [, startTransition] = useTransition();
+  const [todoText, setTodoText] = useState('');
+
+  const handleAddTodo = () => {
+    startTransition(() =>
+      addTodo({
+        text: todoText || `Random todo ${nanoid(4)}`,
+      })
+    );
+    setTodoText(''); // Clear the input field after adding todo
+  };
+
+  return (
+    <div className="flex items-center">
+      <input
+        type="text"
+        value={todoText}
+        onChange={(e) => setTodoText(e.target.value)}
+        className="mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500 "
+        placeholder="Enter todo"
+      />
+      <button
+        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-600"
+        type="button"
+        onClick={handleAddTodo}
+      >
+        Add todo
+      </button>
+    </div>
+  );
 };
 ```
 

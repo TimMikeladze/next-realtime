@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn yalc link next-realtime && yarn link next-realtime && next dev",
+    "dev": "yarn link next-realtime && next dev",
     "build": "yarn migrate && next build",
     "start": "next start",
     "lint": "next lint",

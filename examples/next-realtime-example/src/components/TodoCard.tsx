@@ -15,7 +15,7 @@ const formatDateTimeForHumans = (time: Date) => {
   });
 };
 
-const TodoCard = (props: TodoCardProps) => {
+export const TodoCard = (props: TodoCardProps) => {
   const [, startTransition] = useTransition();
 
   return (
@@ -48,5 +48,3 @@ const TodoCard = (props: TodoCardProps) => {
     </div>
   );
 };
-
-export default TodoCard;

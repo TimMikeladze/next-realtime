@@ -17,9 +17,7 @@ export interface NextRealtimeProviderProps {
   children?: ReactNode;
   path?: string;
   revalidateTag: (tag: string) => Promise<void>;
-  sessionId: () => Promise<{
-    value: string;
-  }>;
+  sessionId: () => Promise<any>;
 }
 
 interface NextRealtimeContextProps {

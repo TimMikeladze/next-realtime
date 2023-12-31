@@ -2,9 +2,9 @@ import { getTodos } from '../actions/getTodos';
 import { AddTodoButton } from './AddTodoButton';
 import { ClearTodosButton } from './ClearTodosButton';
 import { RealtimeButton } from './RealtimeButton';
-import TodoCard from './TodoCard';
+import { TodoCard } from './TodoCard';
 
-const TodoList = async () => {
+export const TodoList = async () => {
   const todos = await getTodos();
 
   return (
@@ -23,5 +23,3 @@ const TodoList = async () => {
     </div>
   );
 };
-
-export default TodoList;

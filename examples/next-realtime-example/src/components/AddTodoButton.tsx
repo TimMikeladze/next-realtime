@@ -8,10 +8,6 @@ export const AddTodoButton = () => {
   const [, startTransition] = useTransition();
   const [todoText, setTodoText] = useState('');
 
-  const handleInputChange = (e) => {
-    setTodoText(e.target.value);
-  };
-
   const handleAddTodo = () => {
     startTransition(() =>
       addTodo({
@@ -26,7 +22,7 @@ export const AddTodoButton = () => {
       <input
         type="text"
         value={todoText}
-        onChange={handleInputChange}
+        onChange={(e) => setTodoText(e.target.value)}
         className="mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-500 "
         placeholder="Enter todo"
       />
