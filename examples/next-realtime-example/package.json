@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "yarn yalc link next-realtime && yarn link next-realtime && next dev",
-    "build": "next build",
+    "build": "yarn migrate && next build",
     "start": "next start",
     "lint": "next lint",
     "migrate:generate": "drizzle-kit generate:pg --out src/drizzle/migrations --schema src/drizzle/schema.ts",
