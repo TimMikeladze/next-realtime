@@ -29,17 +29,14 @@ jobs:
       - name: Run tests
         run: yarn test:ci
 
-      - name: Build package
-        run: yarn build
-
-      - name: Setup example
-        run: cd examples/next-realtime-example && yarn install --frozen-lockfile && yarn link next-realtime && yarn build
-
       - name: Check linting
         run: yarn lint
 
       - name: Check types
         run: yarn type-check
+
+      - name: Build package
+        run: yarn build
 
       - name: Check commits messages
         uses: wagoid/commitlint-github-action@v5
