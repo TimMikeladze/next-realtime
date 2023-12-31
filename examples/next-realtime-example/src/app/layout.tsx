@@ -4,11 +4,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
-import { NextRealtimeStreamProvider } from 'next-realtime/react';
-import { createRealtimeSessionId } from 'next-realtime/server';
-
-import { revalidateTag } from 'next/cache';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -18,21 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <NextRealtimeStreamProvider
-      revalidateTag={async (tag: string) => {
-        'use server';
-
-        revalidateTag(tag);
-      }}
-      sessionId={async () => {
-        'use server';
-
-        return createRealtimeSessionId();
-      }}
-    >
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </NextRealtimeStreamProvider>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
   );
 }
