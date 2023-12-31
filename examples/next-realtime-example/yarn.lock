@@ -2486,10 +2486,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-realtime@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/next-realtime/-/next-realtime-0.0.1.tgz#1566b7cddb16cb1c79c4fdec9d10f7b39e816577"
-  integrity sha512-UFGnEwbtlusF0JXqLd3q56bGeJ3sUFVRp7Nvndo5Z2aPkcZu4DPTe3ec82/+XRhE/bT4giGjoNQUS+IVCIAxjw==
+next-realtime@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/next-realtime/-/next-realtime-0.0.2.tgz#651a28eb6b926afca1f482403eda9b0b59bdbe39"
+  integrity sha512-M29GsFf5MffB2y/m7q3H9jObRXdPBji19RpUoBUZb08Grow/cjjcCc+9J+TOySWDifM8LKz7r77YqnTxWpwMYw==
   dependencies:
     react-fetch-streams "^1.1.2"
 
