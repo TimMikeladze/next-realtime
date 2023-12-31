@@ -1,9 +1,10 @@
 import Redis from 'ioredis';
-import { configNextRealtimePostgres } from 'next-realtime';
-import { client } from '../../drizzle/getDbServer';
+import { configNextRealtimeRedis } from 'next-realtime/server';
 
 export const redis = new Redis(process.env.REDIS_CONNECTION_STRING as string);
 
-export const { NextRealtimeStreamHandler, revalidateRealtimeTag } =
-  // configNextRealtimeRedis(redis);
-  configNextRealtimePostgres(client);
+export const {
+  NextRealtimeStreamHandler,
+  revalidateRealtimeTag,
+  getRealtimeSessionId,
+} = configNextRealtimeRedis(redis);

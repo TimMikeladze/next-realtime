@@ -48,15 +48,17 @@ export const NextRealtimeStreamProvider = (
 ) => {
   const [, startTransition] = useTransition();
 
-  const [generatingId, startGeneratingIdTransition] = useTransition();
-  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+  const [, startGeneratingIdTransition] = useTransition();
+  const [realtimeSessionId, setRealtimeSessionId] = useState<
+    string | undefined
+  >(undefined);
 
   useEffect(() => {
     startGeneratingIdTransition(() => {
       props.sessionId?.()?.then((id) => {
         if (id && id.value) {
           console.log('Setting session id...', id.value);
-          setSessionId(id.value);
+          setRealtimeSessionId(id.value);
         }
       });
     });
@@ -121,8 +123,9 @@ export const NextRealtimeStreamProvider = (
       isStreaming,
       startStreaming,
       stopStreaming,
+      realtimeSessionId,
     }),
-    [url, isStreaming]
+    [url, isStreaming, realtimeSessionId]
   );
 
   return (

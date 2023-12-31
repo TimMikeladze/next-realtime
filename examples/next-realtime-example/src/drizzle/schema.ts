@@ -12,20 +12,12 @@ const updatedAt = timestamp(`updatedAt`, {
   .notNull()
   .defaultNow();
 
-export const todoListTable = pgTable(`todoList`, {
-  createdAt,
-  updatedAt,
-  id: varchar(`id`).primaryKey(),
-});
-
 export const todoTable = pgTable(`todo`, {
   createdAt,
   updatedAt,
   id: varchar(`id`).primaryKey(),
-  todoListId: varchar(`todoListId`).references(() => todoListTable.id, {
-    onDelete: `cascade`,
-    onUpdate: `cascade`,
-  }),
   text: varchar(`text`),
   completed: boolean(`completed`).default(false),
+  userId: varchar(`userId`),
+  realtimeSessionId: varchar(`realtimeSessionId`),
 });

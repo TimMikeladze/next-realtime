@@ -29,10 +29,10 @@ const addUseStatement = (basePath: string, type: 'server' | 'client') => {
 };
 
 export default defineConfig({
-  entry: ['src/index.ts', 'src/react'],
+  entry: ['src/index.ts', 'src/server', 'src/react'],
   async onSuccess() {
     addUseStatement('dist/react', 'client');
-    // addUseStatement('dist', 'server');
+    addUseStatement('dist/server', 'server');
   },
   ...common,
 });

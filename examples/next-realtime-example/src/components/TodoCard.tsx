@@ -36,11 +36,14 @@ const TodoCard = (props: TodoCardProps) => {
           Delete
         </button>
       </div>
+      <div className="text-gray-400 text-sm">
+        {formatDateTimeForHumans(props.todo.createdAt)}
+      </div>
       <div className="flex justify-between">
+        <div className="text-gray-400 text-sm mr-2">ID: {props.todo.id}</div>
         <div className="text-gray-400 text-sm">
-          {formatDateTimeForHumans(props.todo.createdAt)}
+          Realtime Session ID: {props.todo.realtimeSessionId}
         </div>
-        <div className="text-gray-400 text-sm mr-2">{props.todo.id}</div>
       </div>
     </div>
   );

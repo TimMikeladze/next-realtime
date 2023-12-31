@@ -33,6 +33,10 @@
     "./react": {
       "require": "./dist/react/index.js",
       "import": "./dist/react/index.mjs"
+    },
+    "./server": {
+      "require": "./dist/server/index.js",
+      "import": "./dist/server/index.mjs"
     }
   },
   "files": [

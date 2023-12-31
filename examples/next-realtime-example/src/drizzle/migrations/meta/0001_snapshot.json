@@ -1,6 +1,6 @@
 {
-  "id": "dd96da4a-f742-4141-9f8f-f16a13064b93",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "10a7b662-746a-47ee-82c3-e063f5ab8545",
+  "prevId": "dd96da4a-f742-4141-9f8f-f16a13064b93",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -43,6 +43,12 @@
         },
         "userId": {
           "name": "userId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "realtimeSessionId": {
+          "name": "realtimeSessionId",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false

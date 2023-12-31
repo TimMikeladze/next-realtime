@@ -1,5 +1,5 @@
 import { NextRealtimeStreamProvider } from 'next-realtime/react';
-import { createRealtimeSessionId } from 'next-realtime';
+import { createRealtimeSessionId } from 'next-realtime/server';
 
 import { revalidateTag } from 'next/cache';
 import TodoList from '../components/TodoList';
