@@ -198,10 +198,6 @@ export const addTodo = async ({ text }: { text: string }) => {
 };
 ```
 
-📺 ## Example
-
-![](docs/example.mov)
-
 <!-- TSDOC_START -->
 
 <!-- TSDOC_END -->
