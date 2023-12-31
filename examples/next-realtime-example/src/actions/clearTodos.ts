@@ -7,7 +7,7 @@ import { todoTable } from '../drizzle/schema';
 export const clearTodos = async () => {
   const db = await getDb();
 
-  await db.delete(todoTable).execute();
+  await db.delete(todoTable);
 
   await revalidateRealtimeTag('todos');
 };
