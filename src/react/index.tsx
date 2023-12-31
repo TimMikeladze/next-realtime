@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   useTransition,
@@ -16,6 +17,9 @@ export interface NextRealtimeProviderProps {
   children?: ReactNode;
   path?: string;
   revalidateTag: (tag: string) => Promise<void>;
+  sessionId: () => Promise<{
+    value: string;
+  }>;
 }
 
 interface NextRealtimeContextProps {
@@ -43,6 +47,20 @@ export const NextRealtimeStreamProvider = (
   props: NextRealtimeProviderProps
 ) => {
   const [, startTransition] = useTransition();
+
+  const [generatingId, startGeneratingIdTransition] = useTransition();
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    startGeneratingIdTransition(() => {
+      props.sessionId?.()?.then((id) => {
+        if (id && id.value) {
+          console.log('Setting session id...', id.value);
+          setSessionId(id.value);
+        }
+      });
+    });
+  }, []);
 
   const onNext = useCallback(async (res: any) => {
     try {

@@ -1,5 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { revalidateTag } from 'next/cache';
+import { nanoid } from 'nanoid';
+import { cookies } from 'next/headers';
+import { NextRequest } from 'next/server';
 
 export type PublishFn = (channel: string, message: string) => Promise<any>;
 
@@ -26,7 +29,16 @@ export const configNextRealtime = (options: {
     return options.publish('next-realtime', JSON.stringify({ tags: _tags }));
   };
 
-  const NextRealtimeStreamHandler = () => {
+  const NextRealtimeStreamHandler = (request: NextRequest) => {
+    const cookieStore = cookies();
+    const streamId = request.nextUrl.searchParams.get('id');
+    if (!streamId) {
+      return Response.json({ error: 'id is required' }, { status: 400 });
+    }
+    const sessionId = cookieStore.get('next-realtime-session-id')?.value;
+    if (!sessionId) {
+      return Response.json({ error: 'sessionId is required' }, { status: 400 });
+    }
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
@@ -47,6 +59,7 @@ export const configNextRealtime = (options: {
   return {
     NextRealtimeStreamHandler,
     revalidateRealtimeTag,
+    createRealtimeSessionId,
   };
 };
 
@@ -77,3 +90,13 @@ export const configNextRealtimePostgres = (client: any) =>
       });
     },
   });
+
+export const createRealtimeSessionId = (sessionId: string = nanoid()) => {
+  const cookieStore = cookies();
+  const found = cookieStore.get('next-realtime-session-id');
+  if (found) {
+    return found;
+  }
+  cookieStore.set('next-realtime-session-id', sessionId, { secure: true });
+  return sessionId;
+};
